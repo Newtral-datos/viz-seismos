@@ -181,6 +181,7 @@ function renderPanelTerremoto(p) {
     <div class="ip-bar"></div>
     <div class="ip-body">
       <div class="ip-name">${escHtml(p.lugar || '—')}</div>
+      <div class="ip-sep"></div>
       ${fecha ? `<div class="ip-sub">${fecha}</div>` : ''}
       <div class="ip-sep"></div>
       <div class="ip-stats">
