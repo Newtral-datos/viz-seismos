@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Terremotos en el mundo · M5+</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!--
+    Servidor local:
+      cd mapa-terremotos
+      python3 -m http.server 8000
+    http://localhost:8000
+  -->
+
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <header id="header">
+    <img src="logo-newtral.png" alt="Newtral" class="header-logo" />
+    <span class="header-title">Terremotos registrados de magnitud 5 o más</span>
+  </header>
+
+  <div id="magnitud-slider-wrap" class="magnitud-slider-wrap">
+    <div class="slider-header">
+      <span class="slider-label">Magnitud mín.</span>
+      <span id="magnitud-slider-val" class="slider-val">Todos</span>
+    </div>
+    <input type="range" id="magnitud-slider" class="magnitud-slider" min="50" max="95" value="50" step="5" />
+  </div>
+
+  <div id="anio-slider-wrap" class="anio-slider-wrap">
+    <div class="slider-header">
+      <span class="slider-label">Desde año</span>
+      <span id="anio-slider-val" class="slider-val">Todos</span>
+    </div>
+    <input type="range" id="anio-slider" class="magnitud-slider" min="1900" max="2026" value="2026" step="1" />
+  </div>
+
+  <div id="leyenda-panel" class="leyenda-panel"></div>
+  <div id="tooltip" class="map-tooltip"></div>
+  <div id="info-panel" class="info-panel ip-hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
