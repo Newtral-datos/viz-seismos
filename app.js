@@ -7,12 +7,23 @@ const TERREMOTOS_FILE = 'terremotos.pmtiles';
 /* ── Mapa ── */
 const map = new maplibregl.Map({
   container: 'map',
-  style: { version: 8, sources: {}, layers: [] },
+  style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
   center: [0, 15],
   zoom: 1.6,
   minZoom: 1,
   antialias: true,
 });
+
+/* Traduce las etiquetas del mapa base (países, ciudades, ríos…) al español,
+   usando el nombre local como respaldo cuando no existe traducción */
+function usarEtiquetasEnEspanol() {
+  for (const layer of map.getStyle().layers) {
+    const field = layer.layout && layer.layout['text-field'];
+    if (field && JSON.stringify(field).includes('name')) {
+      map.setLayoutProperty(layer.id, 'text-field', ['coalesce', ['get', 'name:es'], ['get', 'name']]);
+    }
+  }
+}
 
 const infoPanel = document.getElementById('info-panel');
 
@@ -52,6 +63,7 @@ function aplicarFiltro() {
   else if (conds.length > 1) filtro = ['all', ...conds];
 
   map.setFilter('terremotos-circle', filtro);
+  map.setFilter('terremotos-glow', filtro);
 }
 
 /* ── Carga ── */
@@ -60,17 +72,34 @@ map.on('load', async () => { try {
   const protocol = new pmtiles.Protocol();
   maplibregl.addProtocol('pmtiles', protocol.tile.bind(protocol));
 
-  /* Mapa base CARTO light */
-  map.addSource('basemap', {
-    type: 'raster',
-    tiles: ['https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png'],
-    tileSize: 256,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-  });
-  map.addLayer({ id: 'basemap', type: 'raster', source: 'basemap' });
+  usarEtiquetasEnEspanol();
 
   /* Fuente PMTiles */
   map.addSource('terremotos', { type: 'vector', url: `pmtiles://${TERREMOTOS_FILE}` });
+
+  /* Halo para magnitudes altas (jerarquía visual) */
+  map.addLayer({
+    id: 'terremotos-glow',
+    type: 'circle',
+    source: 'terremotos',
+    'source-layer': 'terremotos',
+    paint: {
+      'circle-radius': ['*', 2.2, ['interpolate', ['linear'], ['zoom'],
+        0, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 3, 9.5, 7],
+        4, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 5, 9.5, 11],
+        8, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 8, 9.5, 16],
+        14, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 12, 9.5, 24],
+      ]],
+      'circle-color': magnitudColor,
+      'circle-blur': 1.1,
+      'circle-opacity': ['step', ['get', 'magnitud'],
+        0,
+        7.0, 0.35,
+        8.0, 0.55,
+        9.0, 0.75,
+      ],
+    },
+  });
 
   /* Círculos */
   map.addLayer({
@@ -93,6 +122,26 @@ map.on('load', async () => { try {
     },
   });
 
+  /* Anillo de hover */
+  map.addSource('hover-point', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+  map.addLayer({
+    id: 'terremotos-hover-ring',
+    type: 'circle',
+    source: 'hover-point',
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'],
+        0, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 3, 9.5, 7],
+        4, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 5, 9.5, 11],
+        8, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 8, 9.5, 16],
+        14, ['interpolate', ['linear'], ['get', 'magnitud'], 5, 12, 9.5, 24],
+      ],
+      'circle-color': 'transparent',
+      'circle-stroke-color': '#013d2e',
+      'circle-stroke-width': 2,
+      'circle-stroke-opacity': 0.9,
+    },
+  });
+
   aplicarFiltro();
 
   /* Controles */
@@ -102,18 +151,24 @@ map.on('load', async () => { try {
 
   /* ── Panel info (hover en desktop, anclado al click en cualquier dispositivo) ── */
   let anclado = false;
+  const hoverSource = map.getSource('hover-point');
 
   map.on('mousemove', 'terremotos-circle', e => {
     map.getCanvas().style.cursor = 'pointer';
     if (anclado) return;
-    const p = e.features?.[0]?.properties;
+    const f = e.features?.[0];
+    const p = f?.properties;
     if (!p) return;
     renderPanelTerremoto(p);
     infoPanel.classList.remove('ip-hidden');
+    hoverSource.setData({ type: 'FeatureCollection', features: [f] });
   });
   map.on('mouseleave', 'terremotos-circle', () => {
     map.getCanvas().style.cursor = '';
-    if (!anclado) infoPanel.classList.add('ip-hidden');
+    if (!anclado) {
+      infoPanel.classList.add('ip-hidden');
+      hoverSource.setData({ type: 'FeatureCollection', features: [] });
+    }
   });
 
   map.on('click', 'terremotos-circle', e => {
@@ -130,6 +185,7 @@ map.on('load', async () => { try {
     if (!feats.length) {
       anclado = false;
       infoPanel.classList.add('ip-hidden');
+      hoverSource.setData({ type: 'FeatureCollection', features: [] });
     }
   });
 
