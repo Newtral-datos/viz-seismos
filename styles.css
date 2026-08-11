@@ -3,7 +3,6 @@
 
 :root {
   --accent:  #01f3b3;
-  --accent2: #017a5a;
   --bg:      #fafaf9;
   --bg2:     #ffffff;
   --text:    #1c1917;
@@ -38,36 +37,39 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
-  padding: 11px 20px;
+  padding: 12px 20px;
   background: rgba(250,250,249,0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
 }
 
 .header-logo {
-  height: 22px;
+  height: 20px;
   width: auto;
   display: block;
 }
 
 .header-title {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--text);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .header-updated {
-  font-size: 12px;
+  font-size: 11.5px;
+  font-weight: 500;
   font-style: italic;
-  color: var(--text-muted, #6b7280);
+  color: var(--muted);
+  letter-spacing: 0.01em;
   white-space: nowrap;
   margin-left: auto;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Leyenda flotante ── */
@@ -81,17 +83,17 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   border: 1px solid var(--border);
   border-radius: var(--r);
   box-shadow: var(--shadow);
-  padding: 12px 14px;
+  padding: 14px 16px;
   min-width: 210px;
 }
 
 .lp-titulo {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   color: var(--muted);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .lp-desc {
@@ -110,17 +112,17 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 .lp-step {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: 9px;
+  font-size: 11.5px;
   color: var(--text);
 }
 
 .lp-dot {
-  width: 10px; height: 10px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: var(--accent);
   flex-shrink: 0;
-  box-shadow: 0 0 0 1.5px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 .lp-sep {
@@ -139,11 +141,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   width: 220px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: var(--r);
-  padding: 10px 12px 12px;
+  padding: 11px 13px 13px;
   box-shadow: var(--shadow);
 }
 .anio-slider-wrap { top: 166px; }
@@ -157,83 +159,74 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   font-weight: 700;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 .magnitud-slider {
   width: 100%;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  height: 10px;
+  height: 6px;
   border-radius: 999px;
   outline: none;
   background: linear-gradient(
     to right,
     var(--accent) 0%,
     var(--accent) var(--pct, 100%),
-    #d4d4d4 var(--pct, 100%),
-    #d4d4d4 100%
+    #e2e0dd var(--pct, 100%),
+    #e2e0dd 100%
   );
 }
 .magnitud-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: #fff;
-  border: 2.5px solid var(--accent);
-  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
   cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+  margin-top: -5px;
 }
 .magnitud-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: #fff;
-  border: 2.5px solid var(--accent);
-  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
   cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
 }
 .magnitud-slider::-moz-range-track {
-  height: 10px;
+  height: 6px;
   border-radius: 999px;
-  background: #d4d4d4;
+  background: #e2e0dd;
 }
 .magnitud-slider::-moz-range-progress {
-  height: 10px;
+  height: 6px;
   border-radius: 999px;
   background: var(--accent);
+}
+.magnitud-slider:hover::-webkit-slider-thumb,
+.magnitud-slider:hover::-moz-range-thumb {
+  transform: scale(1.08);
+}
+.magnitud-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(1,243,179,0.28), 0 1px 3px rgba(0,0,0,0.18);
+}
+.magnitud-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px rgba(1,243,179,0.28), 0 1px 3px rgba(0,0,0,0.18);
 }
 .slider-val {
   font-size: 11px;
   font-weight: 700;
   color: var(--text);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
-
-/* ── Tooltip ── */
-.map-tooltip {
-  position: fixed;
-  z-index: 300;
-  background: var(--bg2);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 700;
-  font-family: var(--font);
-  padding: 5px 10px;
-  border-radius: 5px;
-  border: 1px solid var(--border);
-  pointer-events: none;
-  white-space: nowrap;
-  box-shadow: var(--shadow);
-  opacity: 0;
-  transition: opacity 0.12s;
-  max-width: 260px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.map-tooltip.visible { opacity: 1; }
 
 /* ── Geocoder ── */
 .geocoder-ctrl { position: relative; width: 220px; }
@@ -242,15 +235,19 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   padding: 8px 12px;
   font-size: 13px;
   font-family: var(--font);
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid var(--border);
   border-radius: 5px;
   background: #fff;
-  color: #111;
+  color: var(--text);
   outline: none;
   box-shadow: var(--shadow);
+  transition: box-shadow 0.15s, border-color 0.15s;
 }
-.geocoder-input:focus { box-shadow: 0 0 0 2px rgba(1,243,179,0.35); }
-.geocoder-input::placeholder { color: #9ca3af; }
+.geocoder-input:focus {
+  border-color: rgba(1,243,179,0.5);
+  box-shadow: var(--shadow), 0 0 0 3px rgba(1,243,179,0.22);
+}
+.geocoder-input::placeholder { color: var(--muted); }
 .geocoder-results {
   position: absolute;
   top: calc(100% + 4px);
@@ -268,12 +265,13 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   font-size: 12px;
   line-height: 1.4;
   cursor: pointer;
-  color: #111;
-  border-bottom: 1px solid #f3f4f6;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
 }
 .geocoder-item:last-child { border-bottom: none; }
-.geocoder-item:hover { background: #e6fff9; }
-.geocoder-empty { color: #9ca3af; cursor: default; }
+.geocoder-item:hover { background: rgba(1,243,179,0.10); }
+.geocoder-empty { color: var(--muted); cursor: default; }
 .geocoder-empty:hover { background: none; }
 
 /* ── MapLibre overrides ── */
@@ -307,28 +305,29 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 }
 
 .ip-bar {
-  height: 4px;
-  background: #01f3b3;
+  height: 3px;
+  background: var(--accent);
 }
-.ip-body { padding: 13px 15px 15px; text-align: center; }
+.ip-body { padding: 16px 18px 18px; text-align: center; }
 
 .ip-name {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text);
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
 .ip-sub {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  margin-top: 1px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
 }
 .ip-sep {
   height: 1px;
   background: var(--border);
-  margin: 10px 0;
+  margin: 12px 0;
 }
 .ip-stats {
   display: grid;
@@ -339,10 +338,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 .ip-stat--wide { grid-column: 1 / -1; }
 .ip-stat { display: flex; flex-direction: column; align-items: center; }
 .ip-stat-val {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--text);
   line-height: 1.1;
+  font-variant-numeric: tabular-nums;
 }
 .ip-stat-val--sm { font-size: 12px; line-height: 1.3; }
 .ip-stat-key {
@@ -356,13 +356,29 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
 /* ── Responsive ── */
 @media (max-width: 600px) {
-  #header { padding: 8px 12px; gap: 8px; }
+  #header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 16px;
+    gap: 4px;
+  }
   .header-logo { height: 18px; }
-  .header-title { font-size: 10px; white-space: normal; line-height: 1.3; }
+  .header-title {
+    font-size: 10px;
+    white-space: normal;
+    line-height: 1.3;
+    max-width: 100%;
+  }
+  .header-updated {
+    margin-left: 0;
+    white-space: normal;
+    max-width: 100%;
+  }
 
   .magnitud-slider-wrap,
   .anio-slider-wrap {
-    top: 52px;
+    top: 100px;
     width: calc(50vw - 20px);
     padding: 8px 10px 10px;
   }
@@ -380,8 +396,9 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   .ip-stat-key { font-size: 9px; }
   .ip-name { font-size: 12px; }
 
-  .maplibregl-ctrl-top-right { top: 140px !important; }
+  .maplibregl-ctrl-top-right { top: 164px !important; }
   .maplibregl-ctrl-top-right .maplibregl-ctrl { margin-top: 0 !important; }
+  .maplibregl-ctrl-top-right .maplibregl-ctrl-group { margin-top: 10px !important; }
   .geocoder-ctrl { width: 160px; }
 
   .leyenda-panel {
