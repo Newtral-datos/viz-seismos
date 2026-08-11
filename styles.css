@@ -62,6 +62,13 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
   white-space: nowrap;
 }
 
+.header-updated {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted, #6b7280);
+  white-space: nowrap;
+}
+
 /* ── Leyenda flotante ── */
 .leyenda-panel {
   position: fixed;
